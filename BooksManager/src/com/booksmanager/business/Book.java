@@ -38,7 +38,7 @@ public class Book implements Parcelable{
 		this.valoration=v;
 		date_start=ds;		
 		date_end=de;
-		int fa  = 0;
+		int fz  = 0;
 		
 		/*Los días que se ha tardado en leer el libro se calculan mediante función de apoyo.
 		previamente habrá que parsear este String contenedor de la fecha a un formato de tipo 'Date' */
