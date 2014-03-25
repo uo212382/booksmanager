@@ -11,6 +11,8 @@ import com.booksmanager.persistence.BooksDao;
 
 
 
+
+
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,74 +35,41 @@ import android.widget.ListView;
 
 
 
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
-	
-	private static final String TAG = "tag";
+public class MainActivity extends ActionBarActivity implements BookListFragment.Callbacks  {	
+
+	private static final int RESULTADO = 0;	
+	private boolean mUserLearnedDrawer;
 	private static final String USER_LEARNED_DRAWER = "user_learned_drawer";
 	private static final String PREFERENCES = "preferences";
-	private static final String BOOKS = "books";
-	private static final int RESULTADO = 0;
-	private ListView navList;
-	private DrawerLayout navDrawerLayout;
+	private static final String TAG = null;
 	private String [] recursos;
 	private TypedArray navIcons;
-	private ArrayList<ItemDrawer> items_Drawer; //Items del drawer (compuesto de Title + Icon)
 	private DrawerAdapter adapter; //Adaptador para el drawer.
-	private BooksAdapter booksAdapter;
-	private boolean mUserLearnedDrawer;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private ArrayList<Book> bookList = null;
 	private ListView details_Books;
+	private DrawerLayout navDrawerLayout;
+	private ListView navList;	private ArrayList<ItemDrawer> items_Drawer; //Items del drawer (compuesto de Title + Icon)
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.book_list_single_pane);
 		boolean fromSavedInstanceState = false;
-		setContentView(R.layout.main_activity);
-		
 		if (savedInstanceState != null) //Cargar valores pues no es el primer acceso.
 		{
 			mUserLearnedDrawer = savedInstanceState.getBoolean(USER_LEARNED_DRAWER);
 			fromSavedInstanceState=true;
-			/* Cargar el listado de libros */
-			bookList=savedInstanceState.getParcelableArrayList(BOOKS);
 		}
 		else //Primer acceso a la aplicación. Cargar desde la BBDD los libros.
 		{
 			// Restaurar el estado desde las preferencias. Cargarlas.
 			SharedPreferences prefs = getSharedPreferences(PREFERENCES,Context.MODE_PRIVATE);
 			mUserLearnedDrawer = prefs.getBoolean(USER_LEARNED_DRAWER, false);
-			// Cargar datos desde la BBDD si hay.
-			bookList = new ArrayList<Book>();
-			loadListBook();
-			if (bookList != null)
-			{
-				mostrarLibros();
-			}
-		}
-		if (bookList != null)
-		{
-			booksAdapter = new BooksAdapter(this,bookList);
 		}
 		inicializateDrawer(fromSavedInstanceState);
-		details_Books = (ListView) findViewById(R.id.listDetailsBook);
-		details_Books.setOnItemClickListener(this);
-		details_Books.setAdapter(booksAdapter);
-		
-	}
-	
-	private void mostrarLibros()
-	{
-		Iterator it;
-		it = bookList.iterator();
-		Log.v(TAG,"Numero de libros en la BBDD: "+bookList.size());
-		while (it.hasNext())
-		{
-			Book book = (Book) it.next();
-			Log.v(TAG,"Libros: "+book.getTitle()+" "+book.getCategory());
-		}
-	}
+	}	
+
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -124,36 +93,44 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 		}
 	}
 	
-	/*Manejador para cuando se pinche sobre un libro */
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		// Arrancar la actividad para mostrar los detalles
-		Log.v(TAG,"adsfjlkñasdkjlñfdsajkl");
-		Intent intent = new Intent(this, BookDetailsActivity.class);
-		Book book = (Book) parent.getItemAtPosition(position);
-		intent.putExtra(BookDetailsActivity.TITLE, book.getTitle());
-		intent.putExtra(BookDetailsActivity.WRITER, book.getWriter());
-		intent.putExtra(BookDetailsActivity.CATEGORY, book.getCategory());
-		intent.putExtra(BookDetailsActivity.DATESTART, book.getDateStart());
-		intent.putExtra(BookDetailsActivity.DATEEND, book.getDateEnd());
+	//Función encargada de inicializar el Drawer.
+	private void inicializateDrawer(boolean fromSavedState)
+	{		
+		navDrawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
+        navList = (ListView) findViewById(R.id.lista);
+		items_Drawer=createdEntryes();
+        // Se carga en un ArrayAdapter en forma de lista para visualizarlo.
+        adapter = new DrawerAdapter(this,items_Drawer);
+        navList.setAdapter(adapter);
+
+        //Control del Drawer.
+		// Mostrar el icono del drawer
+		final ActionBar actionBar = getSupportActionBar();
+		mDrawerToggle = new ActionBarDrawerToggle(this,navDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) 
+		{
+			// Se llama cuando el Drawer se acaba de cerrar
+			public void onDrawerClosed(View view) 
+			{
+				super.onDrawerClosed(view);	
+				// Actualizar las acciones en el Action Bar
+				supportInvalidateOptionsMenu();
+			}
+
+			// Se llama cuando el Drawer se acaba de abrir
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);	
+				// Actualizar las acciones en el Action Bar
+				mUserLearnedDrawer = true;
+				supportInvalidateOptionsMenu();
+			}         
+		};
 		
-		intent.putExtra(BookDetailsActivity.DAYSREADING, book.getDaysReading());
-		intent.putExtra(BookDetailsActivity.VALORATION, book.getValoration());
-		startActivity(intent);
+		if (!mUserLearnedDrawer && !fromSavedState) 
+		{
+			navDrawerLayout.openDrawer(navList);
+		} 
 	}
 	
-	@Override
-	public void onSaveInstanceState(Bundle bundle)
-	{
-		super.onSaveInstanceState(bundle);
-		bundle.putParcelableArrayList(BOOKS,bookList);
-	}
-	
-	private void loadListBook()
-	{
-		BooksDao bDao = new BooksDao();
-		bookList = bDao.loadBooks(this);
-	}
 	
 	/*Función addBook. Se limita a llamar a una segunda actividad encargada de recoger por pantalla los datos
 	 * insertados por el usuario y almacenarlos. */	
@@ -167,16 +144,18 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
+	    /*Comunicación con el fragmento BookListFragment */
+		FragmentManager fragmentManager = getSupportFragmentManager();	        	
+    	BookListFragment fragment = (BookListFragment) fragmentManager.findFragmentById(R.id.book_list_frag);        	
 	    String title;
 	    String writer;
 	    String category;
 	    String dateStart;
 	    String dateEnd;
+	    Log.v(TAG,"Insert ");
 	    float valoration;
 	    if (resultCode == RESULT_OK)
-	    {
-	    	//FragmentManager fragmentManager = getSupportFragmentManager();
-			//AsignaturaListFragment fragment = (AsignaturaListFragment)fragmentManager.findFragmentById(R.id.fragment_asign);
+	    {	    	
 		    title = data.getExtras().getString("title");
 			writer = data.getExtras().getString("writer"); 
 		    category = data.getExtras().getString("category");
@@ -184,52 +163,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 		    dateStart = data.getExtras().getString("dateStart");
 		    valoration= data.getExtras().getFloat("valoration");
 			Book book = new Book (title,writer,category,dateStart,dateEnd,valoration);
-			bookList.add(book);
-			/* Importante actualizar el listado puesto que al regresar al MainActivity la actividad NO se recrea */
-			booksAdapter = new BooksAdapter(this,bookList);
-			details_Books.setAdapter(booksAdapter);
+			fragment.setBook(book);
 	    }	    
-	}
-	
-		//Función encargada de inicializar el Drawer.
-		private void inicializateDrawer(boolean fromSavedState)
-		{
-			navDrawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
-	        navList = (ListView) findViewById(R.id.lista);
-			items_Drawer=createdEntryes();
-	        // Se carga en un ArrayAdapter en forma de lista para visualizarlo.
-	        adapter = new DrawerAdapter(this,items_Drawer);
-	        navList.setAdapter(adapter);
-
-	        //Control del Drawer.
-			// Mostrar el icono del drawer
-			final ActionBar actionBar = getSupportActionBar();
-			mDrawerToggle = new ActionBarDrawerToggle(this,navDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) 
-			{
-				// Se llama cuando el Drawer se acaba de cerrar
-				public void onDrawerClosed(View view) 
-				{
-					super.onDrawerClosed(view);	
-					// Actualizar las acciones en el Action Bar
-					supportInvalidateOptionsMenu();
-				}
-
-				// Se llama cuando el Drawer se acaba de abrir
-				public void onDrawerOpened(View drawerView) {
-					super.onDrawerOpened(drawerView);	
-					// Actualizar las acciones en el Action Bar
-					mUserLearnedDrawer = true;
-					supportInvalidateOptionsMenu();
-				}         
-			};
-			//Si el drawer nunca ha sido desplegado por el usuario dejarlo abierto;
-			if (!mUserLearnedDrawer && !fromSavedState) 
-				navDrawerLayout.openDrawer(navList);
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setHomeButtonEnabled(true);	
-			navDrawerLayout.setDrawerListener(mDrawerToggle);
-		}
-		
+	}		
 		
 		//Función que crea las entradas del Drawer. Asocia un título con un icono y devuelve un array de los mismos.
 		public ArrayList<ItemDrawer> createdEntryes ()
@@ -247,5 +183,20 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 	        }
 	        
 	        return items_Drawer;
+		}
+		
+		@Override
+		public void onBookSelected(Book book)
+		{
+			// Arrancar la actividad para mostrar los detalles
+			Intent intent = new Intent(this, BookDetailsActivity.class);
+			intent.putExtra(BookDetailsActivity.TITLE, book.getTitle());
+			intent.putExtra(BookDetailsActivity.WRITER, book.getWriter());
+			intent.putExtra(BookDetailsActivity.CATEGORY, book.getCategory());
+			intent.putExtra(BookDetailsActivity.DATESTART, book.getDateStart());
+			intent.putExtra(BookDetailsActivity.DATEEND, book.getDateEnd());		
+			intent.putExtra(BookDetailsActivity.DAYSREADING, book.getDaysReading());
+			intent.putExtra(BookDetailsActivity.VALORATION, book.getValoration());
+			startActivity(intent);
 		}
 }

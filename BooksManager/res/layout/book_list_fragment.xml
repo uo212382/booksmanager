@@ -8,7 +8,7 @@
     
     <!-- The main content view -->
 	<ListView 
-        android:id="@+id/listDetailsBook"
+        android:id="@+id/listBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" /> 
     

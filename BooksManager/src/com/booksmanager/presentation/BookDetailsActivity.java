@@ -66,6 +66,7 @@ public class BookDetailsActivity extends ActionBarActivity{
 		dateEnd.setText(book.getDateEnd());
 		valoration.setClickable(false);
 		valoration.setRating(book.getValoration());
+
 		daysReading.setText(Integer.toString(book.getDaysReading()));
 		
 	}
