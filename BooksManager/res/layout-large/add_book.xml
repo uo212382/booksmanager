@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fond_aplic">"
+
+    <TextView
+        android:id="@+id/tvRotulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/rotulo" 
+        android:textSize="18pt"
+        android:textStyle="bold"
+	    android:textColor="#000000"/>
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/titulo" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvAutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/autor" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+     <TextView
+        android:id="@+id/tvCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="260dp"
+        android:text="@string/categoria" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+     <TextView
+        android:id="@+id/tvFechaInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="340dp"
+        android:text="@string/fecha_inicio" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+     <TextView
+        android:id="@+id/tvFechaFin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="420dp"
+        android:text="@string/fecha_fin" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+      <TextView
+        android:id="@+id/tvValoracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="500dp"
+        android:text="@string/valoracion" 
+        android:textSize="14pt"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+
+
+     <EditText
+         android:id="@+id/etTitulo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/tvTitulo"
+         android:layout_alignBottom="@+id/tvTitulo"
+         android:layout_marginLeft="10dp"
+         android:layout_toRightOf="@+id/tvFechaInicio"
+         android:ems="20"
+         android:textColor="#000000"
+         android:maxLength="40">
+         <requestFocus />
+     </EditText>
+
+     <EditText
+         android:id="@+id/etAutor"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/tvAutor"
+         android:layout_alignBottom="@+id/tvAutor"
+         android:layout_alignLeft="@+id/etTitulo"
+         android:ems="20"
+         android:textColor="#000000"         
+        android:maxLength="24"/>
+
+     <EditText
+         android:id="@+id/etCategoria"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/tvCategoria"
+         android:layout_alignBottom="@+id/tvCategoria"
+         android:layout_alignLeft="@+id/etTitulo"
+         android:ems="20"
+         android:textColor="#000000"         
+        android:maxLength="20"/>
+
+     <EditText
+         android:id="@+id/etFechaInicio"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/tvFechaInicio"
+         android:layout_alignBottom="@+id/tvFechaInicio"
+         android:layout_alignLeft="@+id/etTitulo"
+         android:ems="20"
+         android:textColor="#000000"        
+        android:maxLength="10"/>
+
+     <EditText
+         android:id="@+id/etFechaFin"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/tvFechaFin"
+         android:layout_alignBottom="@+id/tvFechaFin"
+         android:layout_alignLeft="@+id/etTitulo"
+         android:ems="20"
+         android:textColor="#000000"        
+        android:maxLength="10" />
+
+	<RatingBar
+	    android:id="@+id/ratingbar"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignTop="@+id/tvValoracion"
+	    android:numStars="10"
+	    android:rating="0.5"
+	    android:stepSize="0.5" />
+
+	<Button
+	    android:id="@+id/cancel_add_book"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/ratingbar"
+	    android:layout_marginTop="31dp"
+	    android:height="35pt"
+	    android:onClick="cancel_newBook"
+	    android:text="@string/button_cancel"
+	    android:width="100pt" />
+
+	<Button
+	    android:id="@+id/add_book"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/cancel_add_book"
+	    android:layout_alignBottom="@+id/cancel_add_book"
+	    android:layout_alignLeft="@+id/tvValoracion"
+	    android:height="35pt"
+	    android:onClick="newBook"
+	    android:text="@string/button_add"
+	    android:width="100pt" />
+ 
+</RelativeLayout>

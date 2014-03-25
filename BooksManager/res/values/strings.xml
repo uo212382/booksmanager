@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  String de carácter genérico en la aplicación -->
+    <string name="action_settings">Configuración</string>
+    <string name="app_name">BooksManager</string>
+    <string name="drawer_open">Drawer abierto</string>
+    <string name="drawer_close">Drawer cerrado</string>
+    
+    <!--   Strings para cargar en el Drawer&ActionBar -->
+    <string name="elemento1">Mis libros</string>
+    <string name="elemento2">Autores</string>
+    <string name="elemento3">Estadísticas</string>
+    <string name="action_add_book">Nuevo libro</string>
+    
+    <!--  Strings para la actividad addBook que solicita los datos de un libro leído -->
+     <string name="rotulo">Nuevo libro</string>
+     <string name="titulo">Título</string>
+     <string name="autor">Autor</string>
+     <string name="fecha_inicio">Fecha inicio</string>
+     <string name="fecha_fin">Fecha fin</string>
+     <string name="categoria">Categoría</string>
+     <string name="valoracion">Nota</string>
+     <string name="button_add">Registrar</string>
+     <string name="button_cancel">Cancelar</string>
+     
+     <string name="listado">Listado de libros</string>
+     
+   <!--  Strings para el layout que muestra los detalles de los libros -->
+     <string name="details_book">Detalles libro</string>
+     <string name="titulo_detail">Título</string>
+     <string name="writer_detail">Autor</string>
+     <string name="dateStart_detail">Fecha inicio</string>
+     <string name="dateEnd_detail">Fecha fin</string>
+     <string name="category_detail">Categoría</string>
+     <string name="valoration_detail">Calificación</string>
+     <string name="daysReading_detail">Dias leyendo</string>
+
+</resources>

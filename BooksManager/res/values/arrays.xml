@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 
+    <!--  Elementos del drawer -->
+    <array name="nav_options">
+        <item>@string/elemento1</item>
+        <item>@string/elemento2</item>
+        <item>@string/elemento3</item>
+    </array>
+    
+    <!--   Imagenes del drawer  -->
+        <array name="nav_icons">
+        <item>@drawable/ic_mislibro</item>
+        <item>@drawable/ic_autores</item>
+        <item>@drawable/ic_estadisticas</item>
+    </array>
+    
+
+ 
+</resources>
