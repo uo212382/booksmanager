@@ -6,13 +6,6 @@ import java.util.Iterator;
 import com.booksmanager.R;
 import com.booksmanager.business.Book;
 import com.booksmanager.persistence.BooksDao;
-
-
-
-
-
-
-
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -49,12 +42,13 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 	private ListView details_Books;
 	private DrawerLayout navDrawerLayout;
 	private ListView navList;	private ArrayList<ItemDrawer> items_Drawer; //Items del drawer (compuesto de Title + Icon)
+	private boolean twoPanes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.book_list_single_pane);
+		setContentView(R.layout.main);
 		boolean fromSavedInstanceState = false;
 		if (savedInstanceState != null) //Cargar valores pues no es el primer acceso.
 		{
@@ -67,6 +61,11 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 			SharedPreferences prefs = getSharedPreferences(PREFERENCES,Context.MODE_PRIVATE);
 			mUserLearnedDrawer = prefs.getBoolean(USER_LEARNED_DRAWER, false);
 		}
+		if (findViewById(R.id.course_details_container) != null) 
+		{
+			twoPanes = true;
+		}
+		
 		inicializateDrawer(fromSavedInstanceState);
 	}	
 
@@ -129,6 +128,8 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 		{
 			navDrawerLayout.openDrawer(navList);
 		} 
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
 	}
 	
 	
@@ -188,15 +189,18 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 		@Override
 		public void onBookSelected(Book book)
 		{
-			// Arrancar la actividad para mostrar los detalles
-			Intent intent = new Intent(this, BookDetailsActivity.class);
-			intent.putExtra(BookDetailsActivity.TITLE, book.getTitle());
-			intent.putExtra(BookDetailsActivity.WRITER, book.getWriter());
-			intent.putExtra(BookDetailsActivity.CATEGORY, book.getCategory());
-			intent.putExtra(BookDetailsActivity.DATESTART, book.getDateStart());
-			intent.putExtra(BookDetailsActivity.DATEEND, book.getDateEnd());		
-			intent.putExtra(BookDetailsActivity.DAYSREADING, book.getDaysReading());
-			intent.putExtra(BookDetailsActivity.VALORATION, book.getValoration());
-			startActivity(intent);
+			if (twoPanes)
+			{
+				FragmentManager fragmentManager = getSupportFragmentManager();	        	
+	        	BookDetailsFragment fragment = (BookDetailsFragment) fragmentManager.findFragmentById(R.id.book_details_frag);        	
+	            fragment.setBook(book);
+			}
+			else
+			{
+				// Arrancar la actividad para mostrar los detalles
+				Intent intent = new Intent(this, BookDetailsActivity.class);
+				intent.putExtra(BookDetailsActivity.BOOK, book);
+				startActivity(intent);
+			}
 		}
 }
