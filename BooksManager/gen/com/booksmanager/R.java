@@ -1236,17 +1236,17 @@ containing a value of this type.
          */
         public static final int action_settings=0x7f0a000d;
         public static final int app_name=0x7f0a000e;
-        public static final int autor=0x7f0a0017;
-        public static final int button_add=0x7f0a001c;
-        public static final int button_cancel=0x7f0a001d;
-        public static final int categoria=0x7f0a001a;
-        public static final int category_detail=0x7f0a0024;
-        public static final int dateEnd_detail=0x7f0a0023;
-        public static final int dateStart_detail=0x7f0a0022;
-        public static final int daysReading_detail=0x7f0a0026;
+        public static final int autor=0x7f0a0018;
+        public static final int button_add=0x7f0a001d;
+        public static final int button_cancel=0x7f0a001e;
+        public static final int categoria=0x7f0a001b;
+        public static final int category_detail=0x7f0a0025;
+        public static final int dateEnd_detail=0x7f0a0024;
+        public static final int dateStart_detail=0x7f0a0023;
+        public static final int daysReading_detail=0x7f0a0027;
         /**   Strings para el layout que muestra los detalles de los libros 
          */
-        public static final int details_book=0x7f0a001f;
+        public static final int details_book=0x7f0a0020;
         public static final int drawer_close=0x7f0a0010;
         public static final int drawer_open=0x7f0a000f;
         /**    Strings para cargar en el Drawer&ActionBar 
@@ -1254,17 +1254,18 @@ containing a value of this type.
         public static final int elemento1=0x7f0a0011;
         public static final int elemento2=0x7f0a0012;
         public static final int elemento3=0x7f0a0013;
-        public static final int fecha_fin=0x7f0a0019;
-        public static final int fecha_inicio=0x7f0a0018;
-        public static final int listado=0x7f0a001e;
+        public static final int fecha_fin=0x7f0a001a;
+        public static final int fecha_inicio=0x7f0a0019;
+        public static final int listado=0x7f0a001f;
+        public static final int main=0x7f0a0015;
         /**   Strings para la actividad addBook que solicita los datos de un libro leído 
          */
-        public static final int rotulo=0x7f0a0015;
-        public static final int titulo=0x7f0a0016;
-        public static final int titulo_detail=0x7f0a0020;
-        public static final int valoracion=0x7f0a001b;
-        public static final int valoration_detail=0x7f0a0025;
-        public static final int writer_detail=0x7f0a0021;
+        public static final int rotulo=0x7f0a0016;
+        public static final int titulo=0x7f0a0017;
+        public static final int titulo_detail=0x7f0a0021;
+        public static final int valoracion=0x7f0a001c;
+        public static final int valoration_detail=0x7f0a0026;
+        public static final int writer_detail=0x7f0a0022;
     }
     public static final class style {
         /** 

@@ -40,7 +40,6 @@ public class BooksDao {
 		if (db != null)
 			return db.getIdFirstBook();
 		else return -1;
-
 	}
 
 	//Busca un libro por su Id

@@ -11,6 +11,7 @@
     <string name="elemento2">Autores</string>
     <string name="elemento3">Estadísticas</string>
     <string name="action_add_book">Nuevo libro</string>
+    <string name="main">Principal</string>
     
     <!--  Strings para la actividad addBook que solicita los datos de un libro leído -->
      <string name="rotulo">Nuevo libro</string>

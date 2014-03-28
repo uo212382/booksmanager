@@ -59,6 +59,7 @@ public class BookDetailsFragment extends Fragment{
 		
 		View rootView;
 		rootView = inflater.inflate(R.layout.book_details_fragment, container, false);
+		View view=getActivity().findViewById(R.id.course_details_container);
 		//Inicialización de los campos del layout.
 		tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
 		tvCategory = (TextView) rootView.findViewById(R.id.tvCategory);
@@ -69,7 +70,7 @@ public class BookDetailsFragment extends Fragment{
 		tvDaysReading = (TextView) rootView.findViewById(R.id.tvDaysReading);
 		
 		Bundle args = getArguments();		
-		if (args != null) 
+		if (args != null) //¿Se han recibido argumentos?. De ser así, será que los han pasado desde otra actividad. Mostrarlos.
 		{
 			String title = args.getString(TITLE_ARG);
 			String writer = args.getString(WRITER_ARG);
@@ -89,7 +90,7 @@ public class BookDetailsFragment extends Fragment{
 		else 
 		{
 			firstBook=loadFirstBook();
-			if (savedInstanceState!= null)//Hay datos en el Bundle, la descripción.
+			if (savedInstanceState!= null)//Hay datos en el Bundle.
 			{
 				bookSaved = savedInstanceState.getParcelable(DETAILS_BOOK);
 				tvTitle.setText(bookSaved.getTitle());
@@ -100,7 +101,11 @@ public class BookDetailsFragment extends Fragment{
 				tvDaysReading.setText(Integer.toString(bookSaved.getDaysReading()));
 				rbValoration.setRating(bookSaved.getValoration());	
 			}
-			else if (firstBook != null)
+			//Se ha obtenido el primer libro de la BD. Es el que se mostrará al abrir la aplicación
+			 //si existen libros en la BD y aún no ha sido seleccionado ninguno. (Para evitar que muestre cosas anómalas).
+			//Observar además que se compara que la vista sea distinta de null (para saber si estamos en una tableta
+			// o en un móvil, para evitar las operaciones del siguiente else-if y ahorrar trabajo computacional innecesario.
+			else if (firstBook != null && view != null)
 			{
 				tvTitle.setText(firstBook.getTitle());
 				tvCategory.setText(firstBook.getWriter());
@@ -110,18 +115,21 @@ public class BookDetailsFragment extends Fragment{
 				tvDaysReading.setText(Integer.toString(firstBook.getDaysReading()));
 				rbValoration.setRating(firstBook.getValoration());	
 			} 
-			else
-			{
-				tvTitle.setText("---");
-				tvCategory.setText("---");
-				tvWriter.setText("---");
-				tvDateStart.setText("---");
-				tvDateEnd.setText("---");
-				tvDaysReading.setText("---");
+			//Por defecto (BD vacía) se muestran los detalles como vacíos. Aquí también se compara 
+			//con que la vista (view) no sea null. Esto se hace porque tanto lo anterior como esto sólo interesa para 
+			//dispositivos como tablets, donde se manejan dos fragmentos en paralelo y el fragmento de detalles 
+			//SIEMPRE es visible, por lo que hay que tener en cuenta que información mostrarle al usuario.
+			else if (view!= null)
+			{		
+				tvTitle.setText("-----");
+				tvCategory.setText("-----");
+				tvWriter.setText("-----");
+				tvDateStart.setText("-----");
+				tvDateEnd.setText("-----");
+				tvDaysReading.setText("-----");
 				rbValoration.setRating(0);	
 			}
-		}
-		
+		}		
 		return rootView;
 	}
 	
@@ -141,13 +149,19 @@ public class BookDetailsFragment extends Fragment{
 		bundle.putParcelable(DETAILS_BOOK,bookSaved);
 	}
 	
-	
+	//Función loadFirstBook. Encargada de cargar el primer libro de la BD (en función del ID más pequeño) para mostrarlo
+	//cuando la aplicación se inicializa y así no mostrar campos con valores no relativos a libros.
 	private Book loadFirstBook()
 	{
 		BooksDao bDao = new BooksDao();
 		int id_Book = bDao.loadFirstBook(getActivity());
-		firstBook=bDao.searchBookById(getActivity(),id_Book);
-		return firstBook;
+		if (id_Book != -1) //Comprobar que la BD no esté vacía.
+		{
+			firstBook=bDao.searchBookById(getActivity(),id_Book);
+			return firstBook;
+		}
+		else 
+			return null;
 	}
 
 	public void setBook(Book book) {

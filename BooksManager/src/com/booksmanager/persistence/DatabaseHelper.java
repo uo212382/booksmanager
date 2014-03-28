@@ -99,9 +99,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.v(TAG,"Error en getIdFirstBook. Problemas al encontrar el ID del libro");
         	return 0;
         }
+
 		cursor.moveToNext();
-		id_Book = cursor.getInt(0);
-		return id_Book;
+		if (!cursor.isNull(0))
+		{
+			id_Book = cursor.getInt(0);
+			return id_Book;
+		}
+		else return -1;
 	}
 
 	public Book findBookById(int id) {
