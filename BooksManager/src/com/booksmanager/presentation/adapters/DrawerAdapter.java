@@ -1,8 +1,9 @@
-package com.booksmanager.presentation;
+package com.booksmanager.presentation.adapters;
 
 import java.util.ArrayList;
 
 import com.booksmanager.R;
+import com.booksmanager.presentation.ItemDrawer;
 
 
 

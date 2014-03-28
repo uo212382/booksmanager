@@ -16,6 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
  
 	
 	private static final String TAG = null;
+	private static final String ID_BOOK = "_id_book";
+	private static final String LIBROS = "libros";
 
 	public DatabaseHelper(Context context) {
         super(context, "booksmanager", null, 1);
@@ -79,5 +81,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			booksList.add(book);
 		}
 		return booksList;
+	}
+	
+	//Devuelve el Id más pequeño de la tabla, el que se corresponderá con el primer libro del listado.
+	public int getIdFirstBook()
+	{
+		int id_Book;
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor;
+		try
+		{
+			cursor = db.rawQuery("SELECT MIN(_id_book) FROM libros",null);
+		}
+        catch (SQLException sql)
+        {
+            db.close();
+            Log.v(TAG,"Error en getIdFirstBook. Problemas al encontrar el ID del libro");
+        	return 0;
+        }
+		cursor.moveToNext();
+		id_Book = cursor.getInt(0);
+		return id_Book;
+	}
+
+	public Book findBookById(int id) {
+		// TODO Auto-generated method stub
+		String idBook = Integer.toString(id);
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor;
+		try
+		{
+			cursor = db.rawQuery("SELECT * FROM libros where _id_book = "+idBook,null);
+		}
+        catch (SQLException sql)
+        {
+            db.close();
+            Log.v(TAG,"Error en findBookById. Problemas al buscar el libro");
+        	return null;
+        }
+		cursor.moveToNext();
+		Book firstBook = new Book(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getFloat(6));
+		return firstBook;
 	}
 }

@@ -2,6 +2,7 @@ package com.booksmanager.persistence;
 
 import java.util.ArrayList;
 
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.content.Context;
 
@@ -29,6 +30,26 @@ public class BooksDao {
 		db= new DatabaseHelper (context);
 		if (db != null)
 			return db.uploadBooks();
+		else return null;
+	}
+
+	public int loadFirstBook(Context context) 
+	{
+		// TODO Auto-generated method stub
+		db= new DatabaseHelper (context);
+		if (db != null)
+			return db.getIdFirstBook();
+		else return -1;
+
+	}
+
+	//Busca un libro por su Id
+	public Book searchBookById(Context context,int id) 
+	{
+		// TODO Auto-generated method stub
+		db= new DatabaseHelper (context);
+		if (db != null)
+			return db.findBookById(id);
 		else return null;
 	}
 

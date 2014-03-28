@@ -15,7 +15,7 @@ import android.view.View.OnTouchListener;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class AddBook extends Activity
+public class AddBookActivity extends Activity
 {
 	private static final String TAG = null;
 	private TextView tvTitle;

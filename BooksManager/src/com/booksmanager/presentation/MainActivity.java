@@ -6,6 +6,8 @@ import java.util.Iterator;
 import com.booksmanager.R;
 import com.booksmanager.business.Book;
 import com.booksmanager.persistence.BooksDao;
+import com.booksmanager.presentation.adapters.DrawerAdapter;
+
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -96,7 +98,9 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 	private void inicializateDrawer(boolean fromSavedState)
 	{		
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
+		View header = getLayoutInflater().inflate(R.layout.header_drawer,null);
         navList = (ListView) findViewById(R.id.lista);
+        navList.addHeaderView(header);
 		items_Drawer=createdEntryes();
         // Se carga en un ArrayAdapter en forma de lista para visualizarlo.
         adapter = new DrawerAdapter(this,items_Drawer);
@@ -137,7 +141,7 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 	 * insertados por el usuario y almacenarlos. */	
 	private void addBook()
 	{
-		Intent intent = new Intent(this, AddBook.class);
+		Intent intent = new Intent(this, AddBookActivity.class);
 		startActivityForResult(intent,RESULTADO);
 	}
 	
@@ -166,7 +170,9 @@ public class MainActivity extends ActionBarActivity implements BookListFragment.
 			Book book = new Book (title,writer,category,dateStart,dateEnd,valoration);
 			fragment.setBook(book);
 	    }	    
-	}		
+	}	
+	
+
 		
 		//Función que crea las entradas del Drawer. Asocia un título con un icono y devuelve un array de los mismos.
 		public ArrayList<ItemDrawer> createdEntryes ()

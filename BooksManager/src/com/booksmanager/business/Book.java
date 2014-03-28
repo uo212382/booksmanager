@@ -29,6 +29,10 @@ public class Book implements Parcelable{
 	private SimpleDateFormat dateFormat = new SimpleDateFormat ("dd/MM/yyyy");
 	private BooksDao bDao = new BooksDao();
 
+	public Book()
+	{
+		
+	}
 	
 	public Book(String t, String w, String c, String ds, String de, float v)
 	{

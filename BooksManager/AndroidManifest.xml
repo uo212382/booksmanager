@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="com.booksmanager.presentation.AddBook"
+            android:name="com.booksmanager.presentation.AddBookActivity"
             android:label="@string/app_name" 
             
             android:parentActivityName="com.booksmanager.presentation.MainActivity" >

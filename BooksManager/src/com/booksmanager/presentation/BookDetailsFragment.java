@@ -2,6 +2,7 @@ package com.booksmanager.presentation;
 
 import com.booksmanager.R;
 import com.booksmanager.business.Book;
+import com.booksmanager.persistence.BooksDao;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +27,7 @@ public class BookDetailsFragment extends Fragment{
 	private static final String VALORATION_ARG = "valoration";
 	private static final String DAYSREADING_ARG ="daysReading";
 	private static final String TAG = null;
+	private static final String DETAILS_BOOK = "bookDetails";
 	private TextView tvTitle;
 	private TextView tvWriter;
 	private TextView tvCategory;
@@ -33,6 +35,8 @@ public class BookDetailsFragment extends Fragment{
 	private TextView tvDateEnd;
 	private TextView tvDaysReading;
 	private RatingBar rbValoration;
+	private Book firstBook;
+	private Book bookSaved;
 	
 	public static BookDetailsFragment newInstance(Book book)
 	{
@@ -55,6 +59,7 @@ public class BookDetailsFragment extends Fragment{
 		
 		View rootView;
 		rootView = inflater.inflate(R.layout.book_details_fragment, container, false);
+		//Inicialización de los campos del layout.
 		tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
 		tvCategory = (TextView) rootView.findViewById(R.id.tvCategory);
 		tvWriter = (TextView) rootView.findViewById(R.id.tvWriter);
@@ -68,7 +73,7 @@ public class BookDetailsFragment extends Fragment{
 		{
 			String title = args.getString(TITLE_ARG);
 			String writer = args.getString(WRITER_ARG);
-			String category = args.getString(WRITER_ARG);
+			String category = args.getString(CATEGORY_ARG);
 			String dateStart= args.getString(DATESTART_ARG);
 			String dateEnd= args.getString(DATEEND_ARG);
 			Float valoration = args.getFloat(VALORATION_ARG);
@@ -81,8 +86,68 @@ public class BookDetailsFragment extends Fragment{
 			tvDaysReading.setText(Integer.toString(daysReading));
 			rbValoration.setRating(valoration);			
 		}
+		else 
+		{
+			firstBook=loadFirstBook();
+			if (savedInstanceState!= null)//Hay datos en el Bundle, la descripción.
+			{
+				bookSaved = savedInstanceState.getParcelable(DETAILS_BOOK);
+				tvTitle.setText(bookSaved.getTitle());
+				tvCategory.setText(bookSaved.getWriter());
+				tvWriter.setText(bookSaved.getCategory());
+				tvDateStart.setText(bookSaved.getDateStart());
+				tvDateEnd.setText(bookSaved.getDateEnd());
+				tvDaysReading.setText(Integer.toString(bookSaved.getDaysReading()));
+				rbValoration.setRating(bookSaved.getValoration());	
+			}
+			else if (firstBook != null)
+			{
+				tvTitle.setText(firstBook.getTitle());
+				tvCategory.setText(firstBook.getWriter());
+				tvWriter.setText(firstBook.getCategory());
+				tvDateStart.setText(firstBook.getDateStart());
+				tvDateEnd.setText(firstBook.getDateEnd());
+				tvDaysReading.setText(Integer.toString(firstBook.getDaysReading()));
+				rbValoration.setRating(firstBook.getValoration());	
+			} 
+			else
+			{
+				tvTitle.setText("---");
+				tvCategory.setText("---");
+				tvWriter.setText("---");
+				tvDateStart.setText("---");
+				tvDateEnd.setText("---");
+				tvDaysReading.setText("---");
+				rbValoration.setRating(0);	
+			}
+		}
 		
 		return rootView;
+	}
+	
+	
+	//Salvar la instancia actual en el bundle.
+	@Override
+	public void onSaveInstanceState(Bundle bundle)
+	{
+		super.onSaveInstanceState(bundle);
+		String title = (String) tvTitle.getText();
+		String writer= (String) tvWriter.getText();
+		String category = (String) tvCategory.getText();
+		String dateStart = (String) tvDateStart.getText();
+		String dateEnd = (String) tvDateEnd.getText();
+		Float valoration = rbValoration.getRating();
+		Book bookSaved = new Book (title,writer,category,dateStart,dateEnd,valoration);
+		bundle.putParcelable(DETAILS_BOOK,bookSaved);
+	}
+	
+	
+	private Book loadFirstBook()
+	{
+		BooksDao bDao = new BooksDao();
+		int id_Book = bDao.loadFirstBook(getActivity());
+		firstBook=bDao.searchBookById(getActivity(),id_Book);
+		return firstBook;
 	}
 
 	public void setBook(Book book) {

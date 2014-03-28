@@ -2,6 +2,8 @@ package com.booksmanager.presentation;
 
 
 
+import java.util.ArrayList;
+
 import com.booksmanager.R;
 import com.booksmanager.business.Book;
 
@@ -43,5 +45,7 @@ public class BookDetailsActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}			
 	}
+	
+
 
 }
